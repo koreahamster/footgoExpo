@@ -19,6 +19,7 @@ const Firebase = {
       await firebase
         .auth()
         .createUserWithEmailAndPassword(user.email, user.password);
+        
       const uid = Firebase.getCurrentUser().uid;
 
       let profilePhotoUrl = "defalt";
@@ -80,19 +81,22 @@ const Firebase = {
         return user.data();
       }
     } catch (error) {
-      console.log("Error @getUserInfo: ", error.message);
+      console.log("Error @getUserInfo: ", error);
     }
   },
   logOut: async () => {
     try {
       await firebase.auth().signOut();
     } catch (error) {
-      console.log("Error @logOut: ", error.message);
+      console.log("Error @logOut: ", error);
     }
     return true;
   },
   signIn: async (email, password) =>{
-    return firebase.auth().signInWithEmailAndPassword(email,password)
+      const provider = firebase.auth.EmailAuthProvider;
+      const authCredential = provider.credential(email, password);
+      return await firebase.auth().signInWithCredential(authCredential);
+    //return firebase.auth().signInWithEmailAndPassword(email,password)
   }
 };
 

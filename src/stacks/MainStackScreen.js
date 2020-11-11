@@ -10,10 +10,10 @@ export default MainStackScreen = () => {
   const MainStack = createBottomTabNavigator();
 
   const tabBarOtions = {
-    showLabel: false,
+    showLabel: true,
     style: {
-      backgroundColor: "#222222",
-      paddingBottom: 12,
+      backgroundColor: "white",
+      paddingBottom: 25,
     },
   };
   const screenOptions = ({ route }) => ({
@@ -43,7 +43,7 @@ export default MainStackScreen = () => {
         <FontAwesome
           name={iconName}
           size={24}
-          color={focused ? "#ffffff" : "#666666"}
+          color={focused ? "#000000" : "#666666"}
         />
       );
     },
@@ -53,11 +53,11 @@ export default MainStackScreen = () => {
       tabBarOptions={tabBarOtions}
       screenOptions={screenOptions}
     >
-      <MainStack.Screen name="Home" component={HomeScreen} />
-      <MainStack.Screen name="Team" component={TeamScreen} />
-      <MainStack.Screen name="Match" component={MatchScreen} />
-      <MainStack.Screen name="Rank" component={RankScreen} />
-      <MainStack.Screen name="Preference" component={PreferenceScreen} />
+      <MainStack.Screen name="Home" component={HomeScreen} options={{tabBarLabel: 'Home'}}/>
+      <MainStack.Screen name="Team" component={TeamScreen} options={{tabBarLabel: 'Team'}}/>
+      <MainStack.Screen name="Match" component={MatchScreen} options={{tabBarLabel: 'Match'}}/>
+      <MainStack.Screen name="Rank" component={RankScreen} options={{tabBarLabel: 'Rank'}}/>
+      <MainStack.Screen name="Preference" component={PreferenceScreen} options={{tabBarLabel: 'Refer'}}/>
     </MainStack.Navigator>
   );
 };

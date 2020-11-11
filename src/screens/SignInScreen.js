@@ -11,6 +11,7 @@ export default SignInScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const firebase = useContext(FirebaseContext);
   const [_, setUser] = useContext(UserContext);
+  const [error, setError] = useState();
 
   const signIn = async () => {
     setLoading(true);
@@ -27,7 +28,7 @@ export default SignInScreen = ({ navigation }) => {
         isLoggedIn: true,
       });
     } catch (error) {
-      alert(error.message);
+      setError(error.message);
     } finally {
       setLoading(false);
     }
@@ -58,11 +59,13 @@ export default SignInScreen = ({ navigation }) => {
             autoCapitalize="none"
             autoCompleteType="password"
             autoCorrect={false}
-            autoFocus={true}
             secureTextEntry={true}
             onChangeText={(password) => setPassward(password.trim())}
             value={password}
           />
+          <ErrorControl>
+            <Text center color="red">{error}</Text>
+          </ErrorControl> 
         </AuthContainer>
       </Auth>
       <SignInContainer onPress={signIn} disable={loading}>
@@ -159,4 +162,7 @@ const HeaderGraphic = styled.View`
   z-index: -100;
 `;
 
-const StausBar = styled.StatusBar``;
+const ErrorControl = styled.View`
+ position:absolute;
+ top:75px;
+`;

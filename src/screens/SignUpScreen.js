@@ -16,6 +16,7 @@ export default SignUpScreen = ({ navigation }) => {
   const [profilePhoto, setProfilePhoto] = useState();
   const firebase = useContext(FirebaseContext);
   const [_, setUser] = useContext(UserContext);
+  const [errorVerification, setErrorVerification] = useState();
 
   const getPermission = async () => {
     if (Platform.OS !== "web") {
@@ -30,12 +31,13 @@ export default SignUpScreen = ({ navigation }) => {
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
         aspect: [1, 1],
-        quality: 0,
+        quality: 0.1,
       });
       if (!result.cancelled) {
         setProfilePhoto(result.uri); // 확인 필요
       }
     } catch (error) {
+      
       console.log("Error @pickImage", error);
     }
   };
@@ -50,18 +52,15 @@ export default SignUpScreen = ({ navigation }) => {
   };
   const signUp = async () => {
     setLoading(true);
-
     const user = { username, email, password, profilePhoto };
-
-    try {
-      const createUser = await firebase.createUser(user);
-
+    const createUser = await firebase.createUser(user);
+    if(createUser){
       setUser({ ...createUser, isLoggedIn: true });
-    } catch (error) {
-      console.log("Error @signUp ", error);
-    } finally {
-      setLoading(false);
+    }else{
+      setUser({ ...createUser, isLoggedIn: false });
+      setErrorVerification("Please Cheak Information");
     }
+    setLoading(false);
   };
   return (
     <Container>
@@ -90,6 +89,7 @@ export default SignUpScreen = ({ navigation }) => {
             onChangeText={(username) => setUsername(username.trim())} //trim 확인 필요
             vlaue={username}
           />
+          
         </AuthContainer>
         <AuthContainer>
           <AuthTitle>Email Address</AuthTitle>
@@ -101,6 +101,7 @@ export default SignUpScreen = ({ navigation }) => {
             onChangeText={(email) => setEmail(email.trim())} //trim 확인 필요
             vlaue={email}
           />
+          
         </AuthContainer>
         <AuthContainer>
           <AuthTitle>Password</AuthTitle>
@@ -112,8 +113,12 @@ export default SignUpScreen = ({ navigation }) => {
             onChangeText={(password) => setPassward(password.trim())}
             value={password}
           />
+          <ErrorControl>
+            <Text center color="red">{errorVerification}</Text>
+          </ErrorControl> 
         </AuthContainer>
       </Auth>
+      
       <SignUpContainer onPress={signUp} disable={loading}>
         {loading ? (
           <Loading />
@@ -227,4 +232,7 @@ const HeaderGraphic = styled.View`
   z-index: -100;
 `;
 
-const StausBar = styled.StatusBar``;
+const ErrorControl = styled.View`
+ position:absolute;
+ top:75px;
+`;

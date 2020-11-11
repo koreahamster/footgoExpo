@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import { UserContext } from "../context/UserContext";
 import { FirebaseContext } from "../context/FirebaseContext";
@@ -7,18 +7,20 @@ import Text from "../components/Text";
 export default ProfileScreen = () => {
   const [user, setUser] = useContext(UserContext);
   const firebase = useContext(FirebaseContext);
+
   const logout = async () => {
     const loggedOut = await firebase.logOut();
     if (loggedOut) {
       setUser((state) => ({ ...state, isLoggedIn: false }));
     }
   };
+
   return (
     <Container>
       <ProfileContainer>
         <ProfilePhoto
           source={
-            user.profilePhotoUrl === "default"
+            user.profilePhotoUrl === "undefined"
               ? require("../../assets/defalutUser.png")
               : { uri: user.profilePhotoUrl }
           }
@@ -70,15 +72,15 @@ const Container = styled.View`
   flex: 1;
 `;
 
-const ProfileContainer = styled.View`
-  shadow-opacity: 0.6;
-  shadow-radius: 30px;
-  shadow-color: #222222;
+const ProfileContainer = styled.TouchableOpacity`
+  width: 128px;
+  height: 128px;
+  background-color: #e1e2e6;
+  border-radius: 64px;
 `;
 
 const ProfilePhoto = styled.Image`
-  width: 128px;
-  height: 128px;
+  flex: 1;
   border-radius: 64px;
 `;
 
