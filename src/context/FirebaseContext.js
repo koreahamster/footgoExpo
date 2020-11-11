@@ -22,7 +22,7 @@ const Firebase = {
         
       const uid = Firebase.getCurrentUser().uid;
 
-      let profilePhotoUrl = "defalt";
+      let profilePhotoUrl = "default";
 
       await db.collection("users").doc(uid).set({
         username: user.username,

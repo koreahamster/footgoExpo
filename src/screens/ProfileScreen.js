@@ -20,7 +20,7 @@ export default ProfileScreen = () => {
       <ProfileContainer>
         <ProfilePhoto
           source={
-            user.profilePhotoUrl === "undefined"
+            user.profilePhotoUrl === "default"
               ? require("../../assets/defalutUser.png")
               : { uri: user.profilePhotoUrl }
           }
@@ -73,14 +73,11 @@ const Container = styled.View`
 `;
 
 const ProfileContainer = styled.TouchableOpacity`
-  width: 128px;
-  height: 128px;
-  background-color: #e1e2e6;
-  border-radius: 64px;
 `;
 
 const ProfilePhoto = styled.Image`
-  flex: 1;
+  width: 128px;
+  height: 128px;
   border-radius: 64px;
 `;
 
